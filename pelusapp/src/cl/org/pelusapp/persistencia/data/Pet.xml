@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Pet">
+
+
+	<insert id="insert" parameterType="cl.org.pelusapp.domain.Pet">
+		<selectKey keyProperty="id" resultType="String" order="BEFORE">
+			select COUNT(*) from pet
+		</selectKey>
+		INSERT INTO pet (id_pet, id_race, id_age_grp, id_size, name, color,
+		description)
+		VALUES (#{id}, #{race.idRace}, #{ageGroup.id}, #{size.id}, #{name},
+		#{color}, #{description});
+	</insert>
+
+</mapper>

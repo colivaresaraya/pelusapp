@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Case">
+
+
+	<insert id="insert" parameterType="cl.org.pelusapp.domain.Case">
+		<selectKey keyProperty="id" resultType="String" order="BEFORE">
+			select COUNT(*) from cases
+		</selectKey>
+		INSERT INTO cases (id_case, id_sta_case, id_pet, admission_date, story)
+		VALUES (#{id}, #{statusCase}, #{idPet}, #{addDate}, #{story});
+	</insert>
+
+</mapper>

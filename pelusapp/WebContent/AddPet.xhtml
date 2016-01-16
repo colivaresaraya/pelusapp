@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<title>PelusApp - Tu lugar de adopción</title>
+	<meta name="author" content="Team Pelusapp"></meta>
+	<link rel="icon" href="images/favicon.ico" />
+
+</h:head>
+<h:body style="padding: 60px;background-color:#947A5C"
+	onload="#{addPetMB.init()}">
+	<style>
+.ui-selectonemenu {
+	width: 100% !important;
+}
+
+.ui-selectonemenu-label {
+	width: 100% !important;
+}
+</style>
+	<b:navBar brand="PelusAPP" brandHref="#" fixed="top" inverse="true">
+		<b:navbarLinks>
+			<b:navLink value="Home" href="#"></b:navLink>
+			<b:navLink value="About" href="#about"></b:navLink>
+			<b:navLink value="Contact" href="#contact"></b:navLink>
+		</b:navbarLinks>
+	</b:navBar>
+
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#myNavbar">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+			</div>
+			<div>
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class="nav navbar-nav">
+						<li><a href="/pelusapp/#section1">Home</a></li>
+						<li><a href="/pelusapp/#section2">Publicaciones</a></li>
+						<li><a href="/pelusapp/#section3">Quienes Somos</a></li>
+						<li><a href="/pelusapp/#section4">Contactárnos</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#"><span class="glyphicon glyphicon-user"></span>
+								Registrarse </a></li>
+						<li><a href="#"><span class="glyphicon glyphicon-log-in"></span>
+								Ingresar </a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</nav>
+
+	<b:thumbnail>
+		<img src="images/logo.png" height="40%" width="50%" />
+	</b:thumbnail>
+	<p:messages id="messagesId" errorStyle="color:red; display:block"
+		closable="true" />
+	<h:form id="initialForm" enctype="multipart/form-data">
+
+
+		<p:growl id="growl" sticky="true" showDetail="true" />
+
+		<p:wizard flowListener="#{addPetMB.onFlowProcess}">
+			<p:tab id="Mascota1" title="Mascota 1/2">
+				<b:panel id="panelPet" title="Informacion General"
+					collapsible="false">
+					<p:messages />
+					<b:panelGrid colSpans="2,4,2,4">
+						<h:outputLabel value="Nombre" />
+						<b:inputText id="Name" value="#{addPetMB.pet.name}" />
+						<h:outputLabel value="Color" />
+						<b:inputText id="Color" value="#{addPetMB.pet.color}" />
+						<h:outputLabel value="Especie" />
+						<p:selectOneMenu value="#{addPetMB.species}" id="species">
+							<f:selectItem itemLabel="Seleccione..." noSelectionOption="true" />
+							<f:selectItems value="#{addPetMB.lstspecies}" var="species"
+								itemLabel="#{species.description}" itemValue="#{species}" />
+							<p:ajax listener="#{addPetMB.getRace()}" update="race"
+								process="@this" />
+							<f:converter binding="#{hashCodeBasedSelectObjConverter}" />
+						</p:selectOneMenu>
+						<h:outputLabel value="Raza" />
+						<p:selectOneMenu value="#{addPetMB.pet.race}" id="race">
+							<f:selectItem itemLabel="Seleccione..." noSelectionOption="true" />
+							<f:selectItems value="#{addPetMB.lstRace}" var="raza"
+								itemLabel="#{raza.description}" itemValue="#{raza}" />
+							<f:converter binding="#{hashCodeBasedSelectObjConverter}" />
+						</p:selectOneMenu>
+						<h:outputLabel value="Tamaño" />
+						<p:selectOneMenu value="#{addPetMB.pet.size}" id="size">
+							<f:selectItem itemLabel="Seleccione..." noSelectionOption="true" />
+							<f:selectItems value="#{addPetMB.lstSize}" var="size"
+								itemLabel="#{size.description}" itemValue="#{size}" />
+							<f:converter binding="#{hashCodeBasedSelectObjConverter}" />
+						</p:selectOneMenu>
+						<h:outputLabel value="Grupo Etario" />
+						<p:selectOneMenu value="#{addPetMB.pet.ageGroup}" id="age">
+							<f:selectItem itemLabel="Seleccione..." noSelectionOption="true" />
+							<f:selectItems value="#{addPetMB.lstAgeGroup}" var="ageGroup"
+								itemLabel="#{ageGroup.description}" itemValue="#{ageGroup}" />
+							<f:converter binding="#{hashCodeBasedSelectObjConverter}" />
+						</p:selectOneMenu>
+					</b:panelGrid>
+					<b:panelGrid colSpans="2,10">
+						<h:outputLabel value="Descripcion" />
+						<b:inputTextarea span="12" value="#{addPetMB.pet.description}"
+							id="description" />
+						<p:spacer width="10px" />
+					</b:panelGrid>
+								<b:panelGrid colSpans="8,2,2">
+				<p:spacer width="10px" />
+				<p:commandButton value="Aceptar" id="accept" icon="fa-check"
+					actionListener="#{addPetMB.save}" widgetVar="force"
+					update=":initialForm" />
+				<p:commandButton value="Limpiar" icon="ui-icon-refresh"
+					actionListener="#{addPetMB.init}"
+					action="/AddPet.jsf?faces-redirect=true" process="@this" />
+
+
+			</b:panelGrid>
+					
+				</b:panel>
+			</p:tab>
+
+			<p:tab id="images" title="Mascota 2/2">
+				<b:panel id="panelPetImages" title="Informacion General"
+					collapsible="false">
+					<p:messages />
+					<b:panelGrid colSpans="2,10">
+						<h:outputLabel value="Foto" />
+						<p:fileUpload fileUploadListener="#{addPetMB.upload}"
+							multiple="true" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+							sizeLimit="100000" description="Seleccione Imagen" />
+					</b:panelGrid>
+				</b:panel>
+			</p:tab>
+		</p:wizard>
+
+	</h:form>
+
+</h:body>
+
+</html>
